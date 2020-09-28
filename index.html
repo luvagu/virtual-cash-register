@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Cash Register by LuVaGu</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="./img/site.webmanifest">
+    <link rel="mask-icon" href="./img/safari-pinned-tab.svg" color="#666666">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <button class="openbtn" data-open>💰 Initial Amount</button>
+    <div data-sidebar class="register__cash__sidebar">
+        <button class="closebtn" data-close>❌</button>
+        <form action="#" class="register__cash__form" data-cash-init-form>
+            <h3>Initial Amount</h3>
+            <fieldset>
+                <input type="text" value="0" data-cash-init-value required>
+            </fieldset>
+            <button type="submit" data-cash-init-submit>Register</button>
+            <a href="#" class="reset" data-cash-init-clear>Modify Initial Amount</a>
+            <button class="reset__register" data-register-reset>⚠️ Reset Cash Register</button>
+        </form>
+    </div>
+
+    <!--main content grid -->
+    <div class="container__grid">
+        <div class="entries__container">
+            <h4>Entries (<span data-entries-count>0</span>)</h4>
+            <div class="entries" data-entries></div>
+        </div>
+        <div class="summary__container">
+            <div class="summary__copy" title="Copy Register Summary to clipboard" data-copy-btn>📋</div>
+            <h4>Summary <span data-date></span></h4>
+            <div class="entries" data-area-clipboard>
+                <strong>TRANSACTIONS</strong><br>
+                <span class="darkyellow__text">Initial Amount &raquo;&raquo; <span data-init-value>0.00</span></span><br>
+                Coffe &raquo;&raquo; <span data-coffe-total>0.00</span><br>
+                Beer &raquo;&raquo; <span data-beer-total>0.00</span><br>
+                Drink  &raquo;&raquo; <span data-drink-total>0.00</span><br>
+                Burger &raquo;&raquo; <span data-burger-total>0.00</span><br>
+                Sandwich &raquo;&raquo; <span data-sandwich-total>0.00</span><br>
+                <span class="green__text">Money-In &raquo;&raquo; <span data-money-in-total>0.00</span></span><br>
+                <span class="red__text">Money-Out &raquo;&raquo; <span data-money-out-total>0.00</span></span><br>
+                <span class="red__text">Void &raquo;&raquo; <span data-voids-total>0.00</span></span><br>
+                <strong>PAYMENT METHODS</strong><br>
+                Cash &raquo;&raquo; <span data-payment-cash-total>0.00</span><br>
+                Check &raquo;&raquo; <span data-payment-check-total>0.00</span><br>
+                Card &raquo;&raquo; <span data-payment-card-total>0.00</span><br>
+                <strong>GRAND TOTAL</strong><br>
+                <span class="green__textBold">Total &raquo;&raquo; $<span data-grand-total>0.00</span></span>
+            </div>
+        </div>
+        <div class="header">
+            <img class="logo" src="./img/cash-register.png" alt="Imporpernos Logo">
+        </div>
+        <div class="screen" data-display>
+            <button class="screen__reset hidden" data-restart>Restart 🔄</button>
+            <button class="screen__cancel hidden" data-cancel>Cancel ❌</button>
+            <div class="screen__top" data-prev-operation></div>
+            <div class="screen__bottom" data-curr-operation></div>
+        </div>
+        <div class="keypad">
+            <div class="keypad__left">
+                <button data-number>1</button>
+                <button data-number>2</button>
+                <button data-number>3</button>
+                <button data-number>4</button>
+                <button data-number>5</button>
+                <button data-number>6</button>
+                <button data-number>7</button>
+                <button data-number>8</button>
+                <button data-number>9</button>
+                <button data-number>0</button>
+                <button data-number>.</button>
+                <button class="lightgray" data-delete>DEL</button>
+            </div>
+            <div class="keypad__right">
+                <!-- Changing data-entry references here will break the summary and entries -->
+                <!-- be sure to match the reference names in script.js render functions too -->
+                <button class="lightyellow" data-operation="tp" data-entry="Coffe" data-class="lightyellow">Coffe ☕</button>
+                <button class="lightblue" data-operation="tp" data-entry="Beer" data-class="lightblue">Beer 🍺</button>
+                <button class="lightyellow" data-operation="tp" data-entry="Drink" data-class="lightyellow">Drink 🥃</button>
+                <button class="lightblue" data-operation="tp" data-entry="Burger" data-class="lightblue">Burger 🍔</button>
+                <button class="lightyellow" data-operation="tp" data-entry="Sandwich" data-class="lightyellow">Sandwich 🥪</button>
+                <button class="lightgreen" data-operation="tp" data-entry="Money-In" data-class="lightgreen">Money-In</button>
+                <button class="lightred" data-operation="tn" data-entry="Money-Out" data-class="lightred">Money-Out</button>
+                <button class="lightred" data-void data-entry="Void" data-class="lightred">Void</button>
+            </div>
+        </div>
+        <div class="keypad__options">
+            <div class="keypad__options__left">
+                <h4 class="span-3">Payment Methods</h4>
+                <button class="darkgreen" data-payment="pm" data-entry="Cash" disabled>💸</button>
+                <button class="darkgreen" data-payment="pm" data-entry="Check" disabled>CH</button>
+                <button class="darkgreen" data-payment="pm" data-entry="Card" disabled>💳</button>
+            </div>
+            <div class="keypad__options__right">
+                <button class="span-2 enter" data-enter disabled>ENTER</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

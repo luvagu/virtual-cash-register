@@ -1,0 +1,476 @@
+@font-face {
+	font-family: 'DSDIGI';
+	src: url('./font/DSDIGI.eot');
+	src: local('DSDIGI'), url('./font/DSDIGI.woff') format('woff'), url('./font/DSDIGI.ttf') format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    background-color: #ffbb00;
+    background-image: linear-gradient( 179deg,  rgba(255, 196, 2, 0.9) 9.6%, rgba(243, 206, 71, 0.8) 50.1% );
+}
+
+.openbtn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background-color: rgba(17, 17, 17, 0.9);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    z-index: 1;
+}
+
+.openbtn:hover {
+    background-color: rgba(17, 17, 17, 0.7);
+}
+
+.register__cash__sidebar {
+    height: 100vh;
+    width: 0;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color:black;
+    background-image:
+    radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+    radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+    radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+    radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    /* display: flex; */
+}
+
+.register__cash__sidebar .closebtn {
+    cursor: pointer;
+    position: absolute;
+    background: none;
+    outline: none;
+    border: none;
+    top: 0;
+    right: 0;
+    font-size: 1.5rem;
+    padding: 12px 15px;
+}
+
+.register__cash__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: whitesmoke;
+}
+
+.register__cash__form > h3 {
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.register__cash__form > fieldset {
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.register__cash__form > fieldset > input {
+    width: 150px;
+    padding: 3px 5px;
+    border: 1px solid rgba(255, 136, 0, 0.9);
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-family: 'DSDIGI' !important;
+    text-align: center;
+}
+
+.register__cash__form > button {
+    width: 150px;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    background-color: rgba(255, 187, 0, 1);
+    cursor: pointer;
+    color: black;
+    outline: none;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+}
+
+.register__cash__form > button:hover {
+    background-color: rgba(255, 187, 0, 0.9)
+}
+
+.register__cash__form > a.reset {
+    text-decoration: none;
+    color: rgba(245, 245, 245, 0.9);
+}
+
+.register__cash__form > a.reset:hover {
+    color: rgba(255, 187, 0, 0.9);
+}
+
+.register__cash__form > .reset__register {
+    margin-top: 50px;
+}
+
+.container__grid {
+    display: grid;
+    grid-template-columns: auto 200px;
+    grid-template-rows: 60px 160px auto auto;
+    column-gap: 15px;
+    row-gap: 1.2em;
+    justify-content: center;
+    align-content: center;
+    min-height: 100vh;
+}
+
+.entries__container {
+    grid-column-start: 2; 
+    grid-column-end: 3; 
+    grid-row-start: 3; 
+    grid-row-end: 5;
+    background-color: rgba(245, 245, 245, 0.7);
+    padding: 10px;
+    border: 3px solid rgba(3, 77, 162, 0.9);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.entries__container > h4, .summary__container > h4 {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    word-wrap: break-word;
+}
+
+.entries__container > .entries {
+    max-height: 240px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    font-size: .9rem;
+}
+
+.entries__container > .entries .entrie__section {
+    margin-bottom: 5px; 
+    padding: 0 0 3px 3px;
+    border-bottom: 1px solid rgba(90, 126, 167, 0.5);
+    position: relative;
+}
+
+.entries__container > .entries .entrie__section:last-child {
+    margin-bottom: 0; 
+}
+
+.entrie__voidMode::before {
+    content: 'VOID';
+    font-size: .6rem;
+    color: rgba(255, 0, 0, 0.9);
+    position: absolute;
+    top: 3px;
+    right: 3px;
+}
+
+.summary__container {
+    grid-column-start: 2; 
+    grid-column-end: 3; 
+    grid-row-start: 1; 
+    grid-row-end: 3;
+    background-color: rgba(245, 245, 245, 0.7);
+    padding: 10px;
+    border: 3px solid rgba(3, 77, 162, 0.9);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.summary__container > .summary__copy {
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
+    font-size: 1rem;
+}
+
+.summary__container > .entries {
+    max-height: 160px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    font-size: .9rem;
+}
+
+.entries__container > .entries::-webkit-scrollbar,
+.summary__container > .entries::-webkit-scrollbar {
+    display: none;
+}
+
+.header {
+    background-color: #ffff00;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+}
+
+.header > .logo {
+    object-fit: contain;
+    height: 60px;
+}
+
+.screen {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    flex-direction: column;
+    background-color: rgba(230, 231, 232, 0.9);
+    padding: 10px;
+    font-family: 'DSDIGI' !important;
+    font-size: 3rem;
+    color:#030303;
+    word-wrap: break-word;
+    word-break: break-all;
+    position: relative;
+    border: 3px solid rgba(3, 77, 162, 0.9);
+    border-radius: 10px;
+}
+
+.screen > .screen__reset,
+.screen > .screen__cancel {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    transform: translateX(50%);
+    box-shadow: none;
+    border: 3px solid rgba(3, 77, 162, 0.9);
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 5px 10px;
+    font-size: 1.1rem;
+    background-color: rgba(3, 77, 162, 0.9);
+    color: whitesmoke;
+    letter-spacing: 3px;
+}
+
+.screen > .screen__reset:hover,
+.screen > .screen__cancel:hover {
+    background-color: rgba(3, 77, 162, 1);
+    box-shadow: none;
+}
+
+.voidMode {
+    background-color: rgba(250, 223, 212, 0.9);
+    border: 3px solid rgba(255, 0, 0, 0.9);
+}
+
+.voidMode::before {
+    content: 'VOID MODE';
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 1.2rem;
+    color: rgba(255, 0, 0, 0.9);
+}
+
+.hidden {
+    display: none;
+}
+
+.screen .screen__top::before, .screen .screen__bottom::before {
+    content: attr(data-before);
+    position: absolute;
+    left: 10px;
+}
+
+.keypad, .keypad__options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+
+.keypad__left, .keypad__options__left {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 1.2em;
+}
+
+.keypad__options__left {
+    row-gap: 0;
+}
+
+.keypad__options__left > h4 {
+    text-align: center;
+    text-transform: uppercase;
+    color: rgba(3, 77, 162, 0.9);;
+    word-spacing: 15px;
+    letter-spacing: 8px;
+    padding-bottom: 5px;
+}
+
+.container__grid button {
+    background-color: rgba(245, 245, 245, 0.9);
+    cursor: pointer;
+    color: black;
+    outline: none;
+    font-size: 2rem;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 8px 0 0 rgba(211, 211, 211, 0.9);
+}
+
+.container__grid button:hover {
+    background-color: rgba(245, 245, 245, 0.5);
+    box-shadow: 0 8px 0 0 rgba(211, 211, 211, 0.5);
+}
+
+.container__grid button:disabled {
+    background-color: rgba(119, 136, 153, 0.5);
+    cursor: not-allowed;
+}
+
+.keypad__right > button, .keypad__options__left > button {
+    padding: 5px;
+    font-size: 1.5rem;
+}
+
+.keypad__right, .keypad__options__right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 1.2em;
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+.span-3 {
+    grid-column: span 3;
+}
+
+/* COLORS */
+
+.enter {
+    background-color: rgba(0, 128, 0, 0.9) !important;
+    color: whitesmoke !important;
+}
+
+.enter:hover {
+    background-color: rgba(0, 128, 0, 0.5) !important;
+}
+
+.enter:disabled {
+    background-color: rgba(119, 136, 153, 0.5) !important;
+    color: black !important;
+    cursor: not-allowed !important;
+}
+
+.lightgreen {
+    background-color: rgba(118, 240, 118, 0.9) !important;
+}
+
+.lightgreen:hover {
+    background-color: rgba(118, 240, 118, 0.5) !important;
+}
+
+.darkgreen {
+    background-color: rgba(0, 100, 0, 0.9) !important;
+    color: whitesmoke !important;
+}
+
+.darkgreen:hover {
+    background-color: rgba(0, 100, 0, 0.5) !important;
+}
+
+.lightblue {
+    background-color: rgba(99, 192, 253, 0.9) !important;
+}
+
+.lightblue:hover {
+    background-color: rgba(99, 191, 253, 0.5) !important;
+}
+
+.lightyellow {
+    background-color: rgba(253, 255, 124, 0.9) !important;
+}
+
+.lightyellow:hover {
+    background-color: rgba(253, 255, 124, 0.5) !important;
+}
+
+.lightred {
+    background-color: rgba(255, 140, 169, 0.9) !important;
+}
+
+.lightred:hover {
+    background-color: rgba(255, 140, 169, 0.5) !important;
+}
+
+.lightgray {
+    background-color: rgba(105, 105, 105, 0.9) !important;
+    color: gainsboro !important;
+    font-size: 1.5rem !important;
+}
+
+.lightgray:hover {
+    background-color: rgba(105, 105, 105, 0.5) !important;
+}
+
+.lightgreen:disabled,
+.darkgreen:disabled,
+.lightblue:disabled,
+.lightyellow:disabled,
+.lightred:disabled,
+.lightgray:disabled {
+    cursor: none !important;
+    background-color: rgba(119, 136, 153, 0.5) !important;
+    cursor: not-allowed !important;
+    color: black !important;
+}
+
+.darkyellow__text {
+    color: #574000;
+    font-weight: 600;
+}
+
+.red__text {
+    color: rgb(218, 0, 0);
+}
+
+.green__text {
+    color: darkgreen;
+}
+
+.green__textBold {
+    color: darkgreen;
+    font-weight: 600;
+}
+
+.voidBtnOn {
+    background-color: rgba(139, 0, 0, 1) !important;
+    color: rgba(245, 245, 245, 0.9) !important;
+}
