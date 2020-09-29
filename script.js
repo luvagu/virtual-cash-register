@@ -277,7 +277,7 @@ amendBtn.addEventListener('click', (e) => {
 
     alert('The Initial Amount has been eliminated, you can now enter a new value!')
     localStorage.removeItem(LS_CASH_INIT_VALUE)
-    localStorage.removeItem(LS_REGISTER_TIMESTAMP)
+    // localStorage.removeItem(LS_REGISTER_TIMESTAMP)
     initAmount = ''
     renderSummaryPane()
 })
