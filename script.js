@@ -62,7 +62,7 @@ const LS_REGISTER_TIMESTAMP = 'register.timestamp'
 
 // local storage data
 let savedEntriesData = JSON.parse(localStorage.getItem(LS_REGISTER_ENTRIES)) || []
-let initValue = localStorage.getItem(LS_CASH_INIT_VALUE) || 0
+let initAmount = localStorage.getItem(LS_CASH_INIT_VALUE) || ''
 
 //---> FUNCTIONS
 
@@ -84,15 +84,15 @@ function saveEntriesData() {
 function saveCashInitValue(e) {
     e.preventDefault()
 
-    if (initValue != 0) {
+    if (initAmount !== '') {
         alert('You have already registered the Initial Amount!')
         resetInput()
         closeSidebar()
         return
     }
 
-    initValue = cashInitInput.value
-    localStorage.setItem(LS_CASH_INIT_VALUE, initValue)
+    initAmount = cashInitInput.value
+    localStorage.setItem(LS_CASH_INIT_VALUE, initAmount)
     localStorage.setItem(LS_REGISTER_TIMESTAMP, Date.now())
 
     resetInput()
@@ -147,7 +147,9 @@ function roundToTwoDecimals(n, d) {
 // render summary pane
 function renderSummaryPane() {
 
-    sumInitValue.innerText = initValue == 0 ? '0.00' : initValue
+    const initValue = initAmount === '' ? '0.00' : initAmount
+
+    sumInitValue.innerText = initValue
 
     if (isRealObject(savedEntriesData)) {
 
@@ -220,10 +222,10 @@ function renderSummaryPane() {
         sumMoneyOutTotal.innerText = '0.00'
         sumSandwichTotal.innerText = '0.00'
         sumVoidsTotal.innerText = '0.00'
-        sumPaymCashTotal.innerText = initValue == 0 ? '0.00' : initValue
+        sumPaymCashTotal.innerText = initValue
         sumPaymCheckTotal.innerText = '0.00'
         sumPaymCardTotal.innerText = '0.00'
-        sumGrandTotal.innerText = initValue == 0 ? '0.00' : initValue
+        sumGrandTotal.innerText = initValue
         entriesCount.innerText = '0'
     }
 }
@@ -267,36 +269,41 @@ submitBtn.addEventListener('click', saveCashInitValue)
 amendBtn.addEventListener('click', (e) => {
     e.preventDefault()
 
-    if (initValue == 0) {
+    if (initAmount === '') {
         alert('Nothing to modify, you must first register the Initial Amount!')
         closeSidebar()
         return
     }
 
     alert('The Initial Amount has been eliminated, you can now enter a new value!')
-    initValue = 0
     localStorage.removeItem(LS_CASH_INIT_VALUE)
+    localStorage.removeItem(LS_REGISTER_TIMESTAMP)
+    initAmount = ''
     renderSummaryPane()
 })
 
 resetRegisterBtn.addEventListener('click', (e) => {
     e.preventDefault()
-    if (savedEntriesData.length < 1) {
+
+    if (savedEntriesData.length < 1 && initAmount === '') {
         alert('Nothing to delete!')
         closeSidebar()
         return
     }
 
     if (confirm('All data entered will be deleted. Are you sure you want to proceed with this operation?')) {
+        // reset our local variables and localstorage items
         savedEntriesData = []
+        initAmount = ''
         localStorage.removeItem(LS_CASH_INIT_VALUE)
         localStorage.removeItem(LS_REGISTER_ENTRIES)
         localStorage.removeItem(LS_REGISTER_TIMESTAMP)
+
+        // reset entriesHtml
+        renderSummaryPane()
+        renderEntriesPane()
+        closeSidebar()
     }
-    // reset entriesHtml
-    renderSummaryPane()
-    renderEntriesPane()
-    closeSidebar()
 })
 
 openBtn.addEventListener('click', openSidebar)
@@ -619,7 +626,7 @@ cancelBtn.addEventListener('click', () => {
 // const escapeKey = 27
 // const enterKey = 13
 
-// if (initValue != 0) {
+// if (initAmount != 0) {
 //     document.addEventListener('keydown', e => {
 //         console.log(e)
 //         e.preventDefault();
@@ -641,7 +648,7 @@ cancelBtn.addEventListener('click', () => {
 
 //---> LOAD SAVED DATA ON REFRESH
 
-if (savedEntriesData.length > 0) {
+if (savedEntriesData.length > 0 || initAmount !== '') {
     renderSummaryPane()
     renderEntriesPane()
 }
