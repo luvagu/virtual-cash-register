@@ -10,6 +10,7 @@ Includes Money In/Out only transactions and a Void Mode.
 
 Just enter an amount and select a product, then enter the amount given by the 
 customer and select a payment method, finally press enter to register the transaction.
+Void Mode works exacly the same, just press Void before starting a transaction.
 
 # working demo
 
