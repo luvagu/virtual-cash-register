@@ -161,7 +161,7 @@ body {
 }
 
 .entries__container > .entries {
-    max-height: 240px;
+    max-height: 250px;
     overflow-x: hidden;
     overflow-y: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
@@ -227,11 +227,11 @@ body {
 }
 
 .header {
-    background-color: #ffff00;
+    background-color: rgba(255, 235, 161, 0.7);
     display: flex;
     justify-content: center;
     border-radius: 10px;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
 }
 
 .header > .logo {

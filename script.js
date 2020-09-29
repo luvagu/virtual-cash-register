@@ -50,18 +50,19 @@ const entriesHtml = document.querySelector('[data-entries]')
 
 //---> SETUP TODAY'S DATE
 
-const date = new Date().toLocaleDateString("es", {year:"numeric", day:"2-digit", month:"2-digit"})
+const date = new Date().toLocaleDateString("en-GB", {year:"numeric", day:"2-digit", month:"2-digit"})
 const dateElem = document.querySelector('[data-date]')
 dateElem.innerText = date
 
 //---> LOCALSTORAGE KEYS CONSTANTS
 
-const LS_REGISTER_TIMESTAMP = 'register.timestamp'
 const LS_CASH_INIT_VALUE = 'register.cashInitValue'
 const LS_REGISTER_ENTRIES = 'register.entriesData'
+const LS_REGISTER_TIMESTAMP = 'register.timestamp'
 
-// const isSavedInitValue = localStorage.getItem(LS_CASH_INIT_VALUE)
-// const isSavedEntryData = JSON.parse(localStorage.getItem(LS_REGISTER_ENTRIES))
+// local storage data
+let savedEntriesData = JSON.parse(localStorage.getItem(LS_REGISTER_ENTRIES)) || []
+let initValue = localStorage.getItem(LS_CASH_INIT_VALUE) || 0
 
 //---> FUNCTIONS
 
@@ -75,18 +76,23 @@ function closeSidebar() {
     sidebar.style.width = '0';
 }
 
+function saveEntriesData() {
+    localStorage.setItem(LS_REGISTER_ENTRIES, JSON.stringify(savedEntriesData))
+}
+
 // save cash init value to localStorage
 function saveCashInitValue(e) {
     e.preventDefault()
 
-    if (localStorage.getItem(LS_CASH_INIT_VALUE) !== null) {
+    if (initValue != 0) {
         alert('You have already registered the Initial Amount!')
         resetInput()
         closeSidebar()
         return
     }
 
-    localStorage.setItem(LS_CASH_INIT_VALUE, cashInitInput.value)
+    initValue = cashInitInput.value
+    localStorage.setItem(LS_CASH_INIT_VALUE, initValue)
     localStorage.setItem(LS_REGISTER_TIMESTAMP, Date.now())
 
     resetInput()
@@ -141,72 +147,69 @@ function roundToTwoDecimals(n, d) {
 // render summary pane
 function renderSummaryPane() {
 
-    let initValue = localStorage.getItem(LS_CASH_INIT_VALUE) || 0
     sumInitValue.innerText = initValue == 0 ? '0.00' : initValue
 
-    let loadData = JSON.parse(localStorage.getItem(LS_REGISTER_ENTRIES))
+    if (isRealObject(savedEntriesData)) {
 
-    if (isRealObject(loadData)) {
-
-        let coffeTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const coffeTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Coffe')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumCoffeTotal.innerText = coffeTotal != 0 ? coffeTotal : '0.00'
 
-        let beerTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const beerTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Beer')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumBeerTotal.innerText = beerTotal != 0 ? beerTotal : '0.00'
 
-        let drinkTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const drinkTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Drink')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumDrinkTotal.innerText = drinkTotal != 0 ? drinkTotal : '0.00'
 
-        let burgerTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const burgerTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Burger')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumBurgerTotal.innerText = burgerTotal != 0 ? burgerTotal : '0.00'
 
-        let sandwichTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const sandwichTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Sandwich')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumSandwichTotal.innerText = sandwichTotal != 0 ? sandwichTotal : '0.00'
 
-        let moneyInTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const moneyInTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Money-In')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumMoneyInTotal.innerText = moneyInTotal != 0 ? moneyInTotal : '0.00'
 
-        let moneyOutTotal = roundToTwoDecimals(loadData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
+        const moneyOutTotal = roundToTwoDecimals(savedEntriesData.map(({transactionName: name, transactionValue: value}) => ({name, value}))
             .filter(e => e.name == 'Money-Out')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumMoneyOutTotal.innerText = moneyOutTotal != 0 ? moneyOutTotal : '0.00'
 
-        let voidsTotal = roundToTwoDecimals(loadData.map(({voidAmount}) => ({voidAmount}))
+        const voidsTotal = roundToTwoDecimals(savedEntriesData.map(({voidAmount}) => ({voidAmount}))
             .reduce((a,cv) => a + parseFloat(cv.voidAmount), 0), 2)
         sumVoidsTotal.innerText = voidsTotal != 0 ? voidsTotal : '0.00'
 
-        let paymCashTotal = roundToTwoDecimals(loadData.map(({tenderName: name, tenderAmountIn: value}) => ({name, value}))
+        const paymCashTotal = roundToTwoDecimals(savedEntriesData.map(({tenderName: name, tenderAmountIn: value}) => ({name, value}))
             .filter(e => e.name == 'Cash')
             .reduce((a,cv) => a + parseFloat(cv.value), 0)  + parseFloat(initValue), 2)
         sumPaymCashTotal.innerText = paymCashTotal != 0 ? paymCashTotal : '0.00'
 
-        let paymCheckTotal = roundToTwoDecimals(loadData.map(({tenderName: name, tenderAmountIn: value}) => ({name, value}))
+        const paymCheckTotal = roundToTwoDecimals(savedEntriesData.map(({tenderName: name, tenderAmountIn: value}) => ({name, value}))
             .filter(e => e.name == 'Check')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumPaymCheckTotal.innerText = paymCheckTotal != 0 ? paymCheckTotal : '0.00'
 
-        let paymCardTotal = roundToTwoDecimals(loadData.map(({tenderName: name, tenderAmountIn: value}) => ({name, value}))
+        const paymCardTotal = roundToTwoDecimals(savedEntriesData.map(({tenderName: name, tenderAmountIn: value}) => ({name, value}))
             .filter(e => e.name == 'Card')
             .reduce((a,cv) => a + parseFloat(cv.value), 0), 2)
         sumPaymCardTotal.innerText = paymCardTotal != 0 ? paymCardTotal : '0.00'
         
-        let grandTotal = roundToTwoDecimals(loadData.map(({transactionValue}) => ({transactionValue}))
+        const grandTotal = roundToTwoDecimals(savedEntriesData.map(({transactionValue}) => ({transactionValue}))
             .reduce((a,cv) => a + parseFloat(cv.transactionValue) , 0) + parseFloat(initValue), 2)
         sumGrandTotal.innerText = grandTotal != 0 ? grandTotal : '0.00'
 
-        entriesCount.innerText = loadData.length
+        entriesCount.innerText = savedEntriesData.length
 
     } else {
         sumCoffeTotal.innerText = '0.00'
@@ -227,15 +230,14 @@ function renderSummaryPane() {
 
 // render entries pane
 function renderEntriesPane() {
-    const loadEntries = JSON.parse(localStorage.getItem(LS_REGISTER_ENTRIES))
 
-    if (isRealObject(loadEntries)) {
-        // entriesCount.innerText = loadEntries.length
+    if (isRealObject(savedEntriesData)) {
+
         // reset entriesHtml before update
         entriesHtml.innerHTML = ''
 
-        loadEntries.sort((a,b) => a.timestamp > b.timestamp).forEach(e => {
-            let data = {
+        savedEntriesData.sort((a,b) => a.timestamp > b.timestamp).forEach(e => {
+            const data = {
                 timestamp: e.timestamp,
                 class: e.class,
                 transactionName: e.transactionName,
@@ -249,7 +251,6 @@ function renderEntriesPane() {
         })
     } else {
         // reset entriesHtml anyway
-        // entriesCount.innerText = '0'
         entriesHtml.innerHTML = ''
     }
 }
@@ -266,27 +267,31 @@ submitBtn.addEventListener('click', saveCashInitValue)
 amendBtn.addEventListener('click', (e) => {
     e.preventDefault()
 
-    if (localStorage.getItem(LS_CASH_INIT_VALUE) === null) {
+    if (initValue == 0) {
         alert('Nothing to modify, you must first register the Initial Amount!')
         closeSidebar()
         return
     }
 
     alert('The Initial Amount has been eliminated, you can now enter a new value!')
+    initValue = 0
     localStorage.removeItem(LS_CASH_INIT_VALUE)
     renderSummaryPane()
 })
 
 resetRegisterBtn.addEventListener('click', (e) => {
     e.preventDefault()
-    if (localStorage.length < 1) {
+    if (savedEntriesData.length < 1) {
         alert('Nothing to delete!')
         closeSidebar()
         return
     }
 
     if (confirm('All data entered will be deleted. Are you sure you want to proceed with this operation?')) {
-        localStorage.clear()
+        savedEntriesData = []
+        localStorage.removeItem(LS_CASH_INIT_VALUE)
+        localStorage.removeItem(LS_REGISTER_ENTRIES)
+        localStorage.removeItem(LS_REGISTER_TIMESTAMP)
     }
     // reset entriesHtml
     renderSummaryPane()
@@ -337,6 +342,7 @@ class Register {
     appendNumber(number) {
         if (number === '.' && this.currentEntry.includes('.')) return
         this.currentEntry = this.currentEntry.toString() + number.toString()
+        // console.log('currentEntry >>>', this.currentEntry)
     }
 
     enableEnter() {
@@ -436,8 +442,12 @@ class Register {
             this.payment = this.voidMode ? `-${this.currentEntry}` : this.currentEntry
             this.entryPaym = entry
             if (parseFloat(this.payment) < parseFloat(this.transaction)) {
+                this.operation = 'tp'
                 this.currentEntry = ''
-                alert(`The Payment Method cannot be less than the sale, try again!`)
+                this.payment = ''
+                this.entryPaym = ''
+                alert(`The Payment Method cannot be less than the transaction, try again!`)
+                this.updateDisplay()
                 return
             }
             this.enableEnter()
@@ -447,7 +457,7 @@ class Register {
         this.currentEntry = ''
     }
     
-    saveEntriesData() {
+    entriesData() {
         const data = {
             timestamp: Date.now(),
             class: this.className,
@@ -461,15 +471,11 @@ class Register {
             change: this.change
         }
 
-        const loadSaveEntries = JSON.parse(localStorage.getItem(LS_REGISTER_ENTRIES))
+        savedEntriesData.push(data)
+        // console.log('savedEntriesData', savedEntriesData)
 
-        if (loadSaveEntries !== null) {
-            loadSaveEntries.push(data)
-            localStorage.setItem(LS_REGISTER_ENTRIES, JSON.stringify(loadSaveEntries))
-        } else {
-            localStorage.setItem(LS_REGISTER_ENTRIES, JSON.stringify([data]))
-        }
-
+        // save data to local storage
+        saveEntriesData()
         // only render the current entry object
         renderTemplate(data)
         // this renders the whole localStorage object. now it'd done on page reload
@@ -489,7 +495,7 @@ class Register {
         // this.operation = undefined
         // this.transaction = ''
         // this.payment = ''
-        this.currentEntry = ''
+        // this.currentEntry = ''
     }
 
     formatNumber(number) {
@@ -500,7 +506,7 @@ class Register {
         if (isNaN(intDigits)) {
             intDisplay = ''
         } else {
-            intDisplay = intDigits.toLocaleString('en', {
+            intDisplay = intDigits.toLocaleString('en-GB', {
                 maximumFractionDigits: 0
             })
         }
@@ -540,9 +546,9 @@ class Register {
         if (this.change === '') return
         this.prevDisplayText.innerText = ''
         this.prevDisplayText.removeAttribute('data-before')
-        this.currDisplayText.innerText = `$ ${this.formatNumber(this.change)}`
+        this.currDisplayText.innerText = `£ ${this.formatNumber(this.change)}`
         this.currDisplayText.setAttribute('data-before', 'CHANGE')
-        this.saveEntriesData()
+        this.entriesData()
         this.resetBtShowHide()
         this.cancelBtShowHide()
         this.disableEnter()
@@ -613,27 +619,29 @@ cancelBtn.addEventListener('click', () => {
 // const escapeKey = 27
 // const enterKey = 13
 
-// document.addEventListener('keydown', e => {
-//     // console.log(e)
-//     e.preventDefault();
-//     if (numbersKeysAndDot.indexOf(e.keyCode) >= 0) {
-//         register.appendNumber(e.key)
-//         register.updateDisplay()
-//     } else if (deleteKeys.indexOf(e.keyCode) >= 0) {
-//         register.delete()
-//         register.updateDisplay()
-//     } else if (escapeKey === e.keyCode) {
-//         register.allClear()
-//     } else if (enterKey === e.keyCode) {
-//         register.updateDisplayFinal()
-//     }  else {
-//         return false;
-//     }
-// })
+// if (initValue != 0) {
+//     document.addEventListener('keydown', e => {
+//         console.log(e)
+//         e.preventDefault();
+//         if (numbersKeysAndDot.indexOf(e.keyCode) >= 0) {
+//             register.appendNumber(e.key)
+//             register.updateDisplay()
+//         } else if (deleteKeys.indexOf(e.keyCode) >= 0) {
+//             register.delete()
+//             register.updateDisplay()
+//         } else if (escapeKey === e.keyCode) {
+//             register.allClear()
+//         } else if (enterKey === e.keyCode) {
+//             register.updateDisplayFinal()
+//         }  else {
+//             return false;
+//         }
+//     })
+// }
 
 //---> LOAD SAVED DATA ON REFRESH
 
-if (localStorage.length > 0) {
+if (savedEntriesData.length > 0) {
     renderSummaryPane()
     renderEntriesPane()
 }

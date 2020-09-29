@@ -1,6 +1,9 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Virtual Cash Register",
+    "short_name": "VCR PWA",
+    "start_url": ".",
+    "lang": "en-US",
+    "scope": "/",
     "icons": [
         {
             "src": "/img/android-chrome-192x192.png",
