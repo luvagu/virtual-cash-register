@@ -15,6 +15,6 @@ customer and select a payment method, finally press enter to register the transa
 
 You can view the working demo [HERE](https://luiavag.github.io/virtual-cash-register/)
 
-# Enjoy!
+# enjoy!
  
 Buy me a beer if you dare [HERE](https://paypal.me/MyPriceRite?locale.x=en_GB)
