@@ -645,3 +645,4 @@ if (localStorage.length > 0) {
 // 4. render the sumary list on the fly and not from local storage during a live session ***DONE***
 // 5. enable toggle keboard keystrokes when cash init is set Tip: use isSavedInitValue to toggle the function
 // 6. prevent register entries if entries from the previous day haven't been reset
+// 7. convert the app to a PWA
