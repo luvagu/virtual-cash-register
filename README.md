@@ -14,7 +14,7 @@ Void Mode works exactly the same, just press Void before starting a transaction.
 
 # working demo
 
-You can view the working demo [HERE](https://luiavag.github.io/virtual-cash-register/)
+You can view the working demo [HERE](https://luvagu.github.io/virtual-cash-register/)
 
 # enjoy!
  

@@ -76,6 +76,7 @@ function closeSidebar() {
     sidebar.style.width = '0';
 }
 
+// save entries to localstarage
 function saveEntriesData() {
     localStorage.setItem(LS_REGISTER_ENTRIES, JSON.stringify(savedEntriesData))
 }
@@ -295,6 +296,7 @@ resetRegisterBtn.addEventListener('click', (e) => {
         // reset our local variables and localstorage items
         savedEntriesData = []
         initAmount = ''
+        
         localStorage.removeItem(LS_CASH_INIT_VALUE)
         localStorage.removeItem(LS_REGISTER_ENTRIES)
         localStorage.removeItem(LS_REGISTER_TIMESTAMP)
@@ -481,10 +483,11 @@ class Register {
         savedEntriesData.push(data)
         // console.log('savedEntriesData', savedEntriesData)
 
-        // save data to local storage
-        saveEntriesData()
         // only render the current entry object
         renderTemplate(data)
+        
+        // save data to local storage
+        saveEntriesData()
         // this renders the whole localStorage object. now it'd done on page reload
         //renderEntriesPane()
     }
@@ -660,4 +663,4 @@ if (savedEntriesData.length > 0 || initAmount !== '') {
 // 4. render the sumary list on the fly and not from local storage during a live session ***DONE***
 // 5. enable toggle keboard keystrokes when cash init is set Tip: use isSavedInitValue to toggle the function
 // 6. prevent register entries if entries from the previous day haven't been reset
-// 7. convert the app to a PWA
+// 7. convert the app to a PWA ***DONE***
